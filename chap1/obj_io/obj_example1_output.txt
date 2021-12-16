@@ -1,0 +1,49 @@
+visualizing the mesh using open3D
+Loading the same file with PyTorch3D
+Xudong comment, load obj is called
+Type of vertices =  <class 'torch.Tensor'>
+Type of faces =  <class 'pytorch3d.io.obj_io.Faces'>
+Type of aux =  <class 'pytorch3d.io.obj_io.Properties'>
+vertices =  tensor([[-0.5000, -0.5000,  0.5000],
+        [-0.5000, -0.5000, -0.5000],
+        [-0.5000,  0.5000, -0.5000],
+        [-0.5000,  0.5000,  0.5000],
+        [ 0.5000, -0.5000,  0.5000],
+        [ 0.5000, -0.5000, -0.5000],
+        [ 0.5000,  0.5000, -0.5000],
+        [ 0.5000,  0.5000,  0.5000]])
+faces =  Faces(verts_idx=tensor([[0, 1, 2],
+        [5, 4, 7],
+        [6, 2, 1],
+        [3, 7, 4],
+        [7, 3, 2],
+        [5, 1, 0],
+        [0, 2, 3],
+        [5, 7, 6],
+        [6, 1, 5],
+        [3, 4, 0],
+        [7, 2, 6],
+        [5, 0, 4]]), normals_idx=tensor([[-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1]]), textures_idx=tensor([[-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1],
+        [-1, -1, -1]]), materials_idx=tensor([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]))
+aux =  Properties(normals=None, verts_uvs=None, material_colors={'Door': {'ambient_color': tensor([0.8000, 0.6000, 0.4000]), 'diffuse_color': tensor([0.8000, 0.6000, 0.4000]), 'specular_color': tensor([0.9000, 0.9000, 0.9000]), 'shininess': tensor([0.])}}, texture_images={}, texture_atlas=None)
