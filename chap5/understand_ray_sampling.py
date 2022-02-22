@@ -24,11 +24,11 @@ lights = PointLights(device=device, location=[[0.0, 0.0, -3.0]])
 R, T = look_at_view_transform(dist=2.7, elev=elev, azim=azim)
 cameras = FoVPerspectiveCameras(device=device, R=R, T=T)
 
-render_size = 64
+image_size = 64
 volume_extent_world = 3.0
 raysampler = NDCGridRaysampler(
-    image_width=render_size,
-    image_height=render_size,
+    image_width=image_size,
+    image_height=image_size,
     n_pts_per_ray=50,
     min_depth=0.1,
     max_depth=volume_extent_world,
@@ -42,7 +42,6 @@ print('ray_bundle lengths = ', ray_bundle.lengths.shape)
 print('ray_bundle xys shape = ', ray_bundle.xys.shape)
 
 torch.save({
-    'cameras': cameras,
     'ray_bundle': ray_bundle
 }, 'ray_sampling.pt')
 

@@ -9,12 +9,11 @@ else:
     device = torch.device("cpu")
 
 checkpoint = torch.load('ray_sampling.pt')
-cameras = checkpoint.get('cameras')
 ray_bundle = checkpoint.get('ray_bundle')
 
 batch_size = 10
-densities = torch.ones([batch_size, 1, 64, 64, 64]).to(device)
-colors = torch.ones(batch_size, 3, 64, 64, 64).to(device)
+densities = torch.zeros([batch_size, 1, 64, 64, 64]).to(device)
+colors = torch.zeros(batch_size, 3, 64, 64, 64).to(device)
 voxel_size = 0.1
 
 volumes = Volumes(
