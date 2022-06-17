@@ -9,7 +9,8 @@ from PIL import Image
 from set_up_model_for_inference import synsin_model
 
 
-def inference(path_to_model, test_image, save_path):
+def inference(path_to_model, test_image, save_path = None , theta = -0.15, phi = -0.1, tx = 0,
+              ty = 0, tz = 0.1):
     model_to_test = synsin_model(path_to_model)
     # Load the image
     transform = transforms.Compose([
@@ -17,16 +18,18 @@ def inference(path_to_model, test_image, save_path):
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
+    if isinstance(test_image, str):
+        im = Image.open(test_image)
+    else:
+        im = test_image
 
-    im = Image.open(test_image)
     im = transform(im)
-
     # Parameters for the transformation
-    theta = -0.15
-    phi = -0.1
-    tx = 0
-    ty = 0
-    tz = 0.1
+    theta = theta
+    phi = phi
+    tx = tx
+    ty = ty
+    tz = tz
 
     RT = torch.eye(4).unsqueeze(0)
     # Set up rotation
@@ -59,7 +62,10 @@ def inference(path_to_model, test_image, save_path):
     axis[2].imshow(depth.squeeze().cpu().clamp(max=0.04))
     axis[2].set_title('Predicted Depth')
 
-    plt.savefig(save_path)
+    if save_path:
+        plt.savefig(save_path)
+    else:
+        return pred_imgs[0].squeeze().cpu().permute(1,2,0).numpy() * 0.5 + 0.5
 
 if __name__ == '__main__':
     inference(path_to_model= './synsin/modelcheckpoints/realestate/zbufferpts.pth',
