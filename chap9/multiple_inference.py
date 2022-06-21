@@ -5,6 +5,23 @@ import imageio
 
 def create_gif(model_path, image_path, save_path, theta = -0.15, phi = -0.1, tx = 0,
               ty = 0, tz = 0.1, num_of_frames = 5):
+
+    '''
+    This function creates sequential gif from an input image
+    Inputs:
+        model_path _ path to pretrained model
+        image_path _ first image of the sequence
+        save_path _ path to save new reconstructed gif
+        theta _ rotation parameter theta
+        phi - rotation parameter phi
+        tx _ translation parameter tx
+        ty _ translation parameter ty
+        tz _ translation parameter tz
+        num_of_frames _ number of frames for the gif
+
+    Returns:
+        Saved gif with 'num_of_frames' reconstructed images
+    '''
     im = inference(model_path, test_image=image_path, theta=theta,
                    phi=phi, tx=tx, ty=ty, tz=tz)
     frames = []

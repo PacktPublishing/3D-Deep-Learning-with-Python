@@ -1,3 +1,5 @@
+# This code is based on demos from https://github.com/facebookresearch/synsin
+
 import matplotlib.pyplot as plt
 
 import quaternion
@@ -11,6 +13,22 @@ from set_up_model_for_inference import synsin_model
 
 def inference(path_to_model, test_image, save_path = None , theta = -0.15, phi = -0.1, tx = 0,
               ty = 0, tz = 0.1):
+
+    '''
+    This function takes an input image and returns the reconstructed image from the new view
+    Inputs:
+        path_to_model _ path to pretrained model
+        test_image _ image to test on
+        save_path _ path to save new reconstructed image
+        theta _ rotation parameter theta
+        phi - rotation parameter phi
+        tx _ translation parameter tx
+        ty _ translation parameter ty
+        tz _ translation parameter tz
+
+    Returns:
+        Saved image from new view
+    '''
     model_to_test = synsin_model(path_to_model)
     # Load the image
     transform = transforms.Compose([

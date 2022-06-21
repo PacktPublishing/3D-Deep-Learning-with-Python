@@ -1,3 +1,5 @@
+# This code is based on demos from https://github.com/facebookresearch/synsin
+
 import torch
 import torch.nn as nn
 
@@ -10,8 +12,16 @@ from synsin.models.networks.sync_batchnorm import convert_model
 from synsin.models.base_model import BaseModel
 from synsin.options.options import get_model
 
-# Set up the models
 def synsin_model(model_path):
+    '''
+    Set up SynSin model:
+
+    Input:
+        model_path: path to pretrained model
+
+    Returns:
+        Ready model with uploaded weights
+    '''
 
     torch.backends.cudnn.enabled = True
 
