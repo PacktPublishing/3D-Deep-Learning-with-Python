@@ -1,3 +1,6 @@
 [submodule "chap9/chap9/synsin"]
 	path = chap9/chap9/synsin
 	url = https://github.com/facebookresearch/synsin
+[submodule "chap10/meshrcnn"]
+	path = chap10/meshrcnn
+	url = https://github.com/facebookresearch/meshrcnn
