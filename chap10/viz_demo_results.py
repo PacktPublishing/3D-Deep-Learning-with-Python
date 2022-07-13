@@ -94,7 +94,7 @@ azimuth = args.azimuth  # Rotation of the camera
 # Get the position of the camera based on the spherical angles
 R, T = look_at_view_transform(distance, elevation, azimuth, device=device)
 
-# Render the teapot providing the values of R and T.
+# Render the sofa providing the values of R and T.
 silhouette = silhouette_renderer(meshes_world=sofa_mesh, R=R, T=T)
 image_ref = phong_renderer(meshes_world=sofa_mesh, R=R, T=T)
 
