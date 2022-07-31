@@ -1,0 +1,3 @@
+[submodule "chap7/giraffe"]
+	path = chap7/giraffe
+	url = https://github.com/autonomousvision/giraffe
