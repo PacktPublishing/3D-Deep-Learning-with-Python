@@ -6,7 +6,6 @@ from absl import flags
 from serialization import load_model
 import numpy as np
 
-
 FLAGS = flags.FLAGS
 flags.DEFINE_string("model_file", None, "Path to the model file")
 
