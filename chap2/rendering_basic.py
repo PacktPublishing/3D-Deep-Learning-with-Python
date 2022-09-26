@@ -6,31 +6,23 @@ import torch
 import matplotlib.pyplot as plt
 
 # Util function for loading meshes
-from pytorch3d.io import load_objs_as_meshes, load_obj
+from pytorch3d.io import load_objs_as_meshes
 
 # Data structures and functions for rendering
-from pytorch3d.structures import Meshes
-from pytorch3d.vis.plotly_vis import AxisArgs, plot_batch_individually, plot_scene
-from pytorch3d.vis.texture_vis import texturesuv_image_matplotlib
 from pytorch3d.renderer import (
     look_at_view_transform,
     FoVPerspectiveCameras,
     PerspectiveCameras,
     PointLights,
-    DirectionalLights,
     Materials,
     RasterizationSettings,
     MeshRenderer,
-    MeshRasterizer,
-    SoftPhongShader,
-    TexturesUV,
-    TexturesVertex
+    MeshRasterizer
 )
 
 from pytorch3d.renderer.mesh.shader import HardPhongShader
 
 sys.path.append(os.path.abspath(''))
-from plot_image_grid import image_grid
 
 #Load meshes and visualize it with Open3D
 mesh_file = "./data/cow_mesh/cow.obj"
@@ -73,7 +65,7 @@ renderer = MeshRenderer(
 images = renderer(mesh)
 plt.figure(figsize=(10, 10))
 plt.imshow(images[0, ..., :3].cpu().numpy())
-plt.axis("off");
+plt.axis("off")
 plt.savefig('light_at_front.png')
 
 lights.location = torch.tensor([0.0, 0.0, +1.0], device=device)[None]
@@ -95,7 +87,7 @@ images = renderer(mesh, lights=lights, materials = materials)
 
 plt.figure(figsize=(10, 10))
 plt.imshow(images[0, ..., :3].cpu().numpy())
-plt.axis("off");
+plt.axis("off")
 plt.savefig('dark.png')
 
 R, T = look_at_view_transform(dist=2.7, elev=10, azim=-150)
@@ -112,7 +104,7 @@ materials = Materials(
 images = renderer(mesh, lights=lights, materials=materials, cameras=cameras)
 plt.figure(figsize=(10, 10))
 plt.imshow(images[0, ..., :3].cpu().numpy())
-plt.axis("off");
+plt.axis("off")
 plt.savefig('green.png')
 
 materials = Materials(
@@ -124,7 +116,7 @@ materials = Materials(
 images = renderer(mesh, lights=lights, materials=materials, cameras=cameras)
 plt.figure(figsize=(10, 10))
 plt.imshow(images[0, ..., :3].cpu().numpy())
-plt.axis("off");
+plt.axis("off")
 plt.savefig('red.png')
 
 # Change specular color to green and change material shininess
@@ -138,5 +130,5 @@ materials = Materials(
 images = renderer(mesh, lights=lights, materials=materials, cameras=cameras)
 plt.figure(figsize=(10, 10))
 plt.imshow(images[0, ..., :3].cpu().numpy())
-plt.axis("off");
+plt.axis("off")
 plt.savefig('blue.png')
