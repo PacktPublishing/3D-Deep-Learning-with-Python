@@ -1,5 +1,6 @@
 import torch
 from pytorch3d.transforms import so3_exp_map
+import matplotlib.pyplot as plt
 from tqdm import tqdm
 from pytorch3d.renderer import (
     FoVPerspectiveCameras,
@@ -52,7 +53,8 @@ def sample_images_at_mc_locs(target_images, sampled_rays_xy):
 def show_full_render(
     neural_radiance_field, camera,
     target_image, target_silhouette,
-    loss_history_color, loss_history_sil,
+    renderer_grid, loss_history_color,
+    loss_history_sil,
 ):
     """
     This is a helper function for visualizing the
@@ -103,9 +105,7 @@ def show_full_render(
             ax_.grid("off")
             ax_.axis("off")
         ax_.set_title(title_)
-    fig.canvas.draw(); fig.show()
-    display.clear_output(wait=True)
-    display.display(fig)
+    fig.canvas.draw()
     return fig
 
 def generate_rotating_nerf(neural_radiance_field, target_cameras, renderer_grid, n_frames = 50, device=torch.device("cpu")):

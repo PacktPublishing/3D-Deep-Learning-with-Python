@@ -8,20 +8,19 @@ from pytorch3d.renderer import (
     EmissionAbsorptionRaymarcher,
     ImplicitRenderer,
 )
+from utils.plot_image_grid import image_grid
+from utils.generate_cow_renders import generate_cow_renders
+from utils.helper_functions import (generate_rotating_nerf,
+                                    huber,
+                                    show_full_render,
+                                    sample_images_at_mc_locs)
+from nerf_model import NeuralRadianceField
 
 if torch.cuda.is_available():
     device = torch.device("cuda:0")
     torch.cuda.set_device(device)
 else:
     device = torch.device("cpu")
-
-from utils.plot_image_grid import image_grid
-from utils.generate_cow_renders import generate_cow_renders
-
-from utils.helper_functions import (generate_rotating_nerf,
-                                    huber,
-                                    sample_images_at_mc_locs)
-from nerf_model import NeuralRadianceField
 
 target_cameras, target_images, target_silhouettes = generate_cow_renders(num_views=40, azimuth_range=180) 
 print(f'Generated {len(target_images)} images/silhouettes/cameras.')
@@ -69,8 +68,8 @@ neural_radiance_field = neural_radiance_field.to(device)
 
 lr = 1e-3
 optimizer = torch.optim.Adam(neural_radiance_field.parameters(), lr=lr) 
-batch_size = 6
-n_iter = 3000
+batch_size = 3
+n_iter = 500
 
 loss_history_color, loss_history_sil = [], []
 for iteration in range(n_iter):
@@ -126,6 +125,28 @@ for iteration in range(n_iter):
 
     loss.backward()
     optimizer.step()
+
+    # Visualize the full renders every 100 iterations.
+    if iteration % 100 == 0:
+        show_idx = torch.randperm(len(target_cameras))[:1]
+        fig = show_full_render(
+            neural_radiance_field,
+            FoVPerspectiveCameras(
+                R = target_cameras.R[show_idx], 
+                T = target_cameras.T[show_idx], 
+                znear = target_cameras.znear[show_idx],
+                zfar = target_cameras.zfar[show_idx],
+                aspect_ratio = target_cameras.aspect_ratio[show_idx],
+                fov = target_cameras.fov[show_idx],
+                device = device,
+            ), 
+            target_images[show_idx][0],
+            target_silhouettes[show_idx][0],
+            renderer_grid,
+            loss_history_color,
+            loss_history_sil,
+        )
+        fig.savefig(f'intermediate_{iteration}')
 
 with torch.no_grad():
     rotating_nerf_frames = generate_rotating_nerf(neural_radiance_field, target_cameras, renderer_grid, n_frames=3*5, device=device) 
