@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 import open3d
 import os
-import sys
 import torch
 
 from pytorch3d.io import load_objs_as_meshes
 from pytorch3d.structures.meshes import join_meshes_as_batch
 
-from pytorch3d.structures import Meshes
 from pytorch3d.ops import sample_points_from_meshes
 from pytorch3d.loss import chamfer_distance
 import numpy as np
