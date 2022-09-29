@@ -1,3 +1,6 @@
+[submodule "chap7/giraffe"]
+	path = chap7/giraffe
+	url = https://github.com/autonomousvision/giraffe
 [submodule "chap9/chap9/synsin"]
 	path = chap9/chap9/synsin
 	url = https://github.com/facebookresearch/synsin
