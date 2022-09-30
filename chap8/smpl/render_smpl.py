@@ -6,7 +6,7 @@ from opendr.camera import ProjectPoints
 from smpl.serialization import load_model
 
 ## Load SMPL model (here we load the neural model)
-m = load_model('basicmodel_neutral_lbs_10_207_0_v1.1.0.pkl')
+m = load_model('../smplify/code/models/basicModel_neutral_lbs_10_207_0_v1.0.0.pkl')
 
 ## Assign random pose and shape parameters
 m.pose[:] = np.random.rand(m.pose.size) * .2
