@@ -27,6 +27,7 @@ def main(base_dir, out_dir):
     if not exists(out_dir):
         makedirs(out_dir)
 
+    # Camera azimuth angles for visulization
     do_degrees = [0.]
     model = load_model(MODEL_NEUTRAL_PATH)
     est = np.load(join(data_dir, 'est_joints.npz'))['est_joints']
