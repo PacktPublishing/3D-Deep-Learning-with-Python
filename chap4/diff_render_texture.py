@@ -1,21 +1,16 @@
-import cv2
 import os
 import torch
 import numpy as np
-import imageio
 import torch.nn as nn
-import torch.nn.functional as F
 import matplotlib.pyplot as plt
 from skimage import img_as_ubyte
 
-from pytorch3d.io import load_objs_as_meshes, load_obj
-from pytorch3d.structures import Meshes
-from pytorch3d.transforms import Rotate, Translate
+from pytorch3d.io import load_objs_as_meshes
 
 from pytorch3d.renderer import (
     FoVPerspectiveCameras, look_at_view_transform, look_at_rotation,
     RasterizationSettings, MeshRenderer, MeshRasterizer, BlendParams,
-    SoftSilhouetteShader, HardPhongShader, PointLights, TexturesVertex,
+    SoftSilhouetteShader, HardPhongShader, PointLights,
     SoftPhongShader
 )
 
@@ -91,11 +86,13 @@ plt.figure(figsize=(10, 10))
 plt.imshow(silhouette.squeeze()[..., 3])
 plt.grid(False)
 plt.savefig(os.path.join(output_dir, 'target_silhouette.png'))
+plt.close()
 
 plt.figure(figsize=(10, 10))
 plt.imshow(image_ref.squeeze())
 plt.grid(False)
 plt.savefig(os.path.join(output_dir, 'target_rgb.png'))
+plt.close()
 
 class Model(nn.Module):
     def __init__(self, meshes, renderer_silhouette, renderer_textured, image_ref, weight_silhouette, weight_texture):
@@ -151,7 +148,8 @@ plt.title("Starting RGB Image");
 plt.savefig(os.path.join(output_dir, 'starting_rgb.png'))
 
 for i in range(0, 200):
-    print('i = ', i)
+    if i%10 == 0:
+        print('i = ', i)
 
     optimizer.zero_grad()
     loss, image_silhouette, image_textured = model()
@@ -163,12 +161,14 @@ for i in range(0, 200):
     plt.title("iter: %d, loss: %0.2f" % (i, loss.data))
     plt.axis("off")
     plt.savefig(os.path.join(output_dir, 'soft_silhouette_' + str(i) + '.png'))
+    plt.close()
 
     plt.figure()
     plt.imshow(image_textured.detach().squeeze().cpu().numpy())
     plt.title("iter: %d, loss: %0.2f" % (i, loss.data))
     plt.axis("off")
     plt.savefig(os.path.join(output_dir, 'soft_texture_' + str(i) + '.png'))
+    plt.close()
 
     R = look_at_rotation(model.camera_position[None, :], device=model.device)
     T = -torch.bmm(R.transpose(1, 2), model.camera_position[None, :, None])[:, :, 0]  # (1, 3)
@@ -179,6 +179,7 @@ for i in range(0, 200):
     plt.title("iter: %d, loss: %0.2f" % (i, loss.data))
     plt.axis("off")
     plt.savefig(os.path.join(output_dir, 'hard_silhouette_' + str(i) + '.png'))
+    plt.close()
 
     image = image[0, ..., :3].detach().squeeze().cpu().numpy()
     image = img_as_ubyte(image)
@@ -188,6 +189,7 @@ for i in range(0, 200):
     plt.title("iter: %d, loss: %0.2f" % (i, loss.data))
     plt.axis("off")
     plt.savefig(os.path.join(output_dir, 'hard_texture_' + str(i) + '.png'))
+    plt.close()
 
     if loss.item() < 800:
         break

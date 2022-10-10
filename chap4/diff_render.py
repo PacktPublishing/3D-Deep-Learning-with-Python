@@ -1,17 +1,12 @@
-import cv2
 import os
 import torch
 import numpy as np
-from tqdm.notebook import tqdm
-import imageio
 import torch.nn as nn
-import torch.nn.functional as F
 import matplotlib.pyplot as plt
 from skimage import img_as_ubyte
 
 from pytorch3d.io import load_obj
 from pytorch3d.structures import Meshes
-from pytorch3d.transforms import Rotate, Translate
 
 from pytorch3d.renderer import (
     FoVPerspectiveCameras, look_at_view_transform, look_at_rotation,
@@ -87,11 +82,13 @@ plt.figure(figsize=(10, 10))
 plt.imshow(silhouette.squeeze()[..., 3])  # only plot the alpha channel of the RGBA image
 plt.grid(False)
 plt.savefig(os.path.join(output_dir, 'target_silhouette.png'))
+plt.close()
 
 plt.figure(figsize=(10, 10))
 plt.imshow(image_ref.squeeze())
 plt.grid(False)
 plt.savefig(os.path.join(output_dir, 'target_rgb.png'))
+plt.close()
 
 class Model(nn.Module):
     def __init__(self, meshes, renderer, image_ref):
@@ -123,9 +120,11 @@ plt.imshow(image_init.detach().squeeze().cpu().numpy()[..., 3])
 plt.grid(False)
 plt.title("Starting Silhouette")
 plt.savefig(os.path.join(output_dir, 'starting_silhouette.png'))
+plt.close()
 
 for i in range(0, 200):
-    print('i = ', i)
+    if i%10 == 0:
+        print('i = ', i)
 
     optimizer.zero_grad()
     loss, _ = model()
@@ -147,6 +146,7 @@ for i in range(0, 200):
     plt.title("iter: %d, loss: %0.2f" % (i, loss.data))
     plt.axis("off")
     plt.savefig(os.path.join(output_dir, 'fitting_' + str(i) + '.png'))
+    plt.close()
 
 print('Finished')
 
